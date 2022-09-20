@@ -6,10 +6,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.DishManagement.Se
 {
     public class DishService : IDishService
     {
-
-
         private readonly IDishRepository _dishRepository;
-
 
         public DishService(IDishRepository dishRepository)
         {
@@ -51,8 +48,3 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.DishManagement.Se
         }
     }
 }
-
-
-
-
-   
