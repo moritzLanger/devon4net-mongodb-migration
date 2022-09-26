@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.10"
 services:
   sql-server:
     build: 
@@ -22,8 +22,14 @@ services:
     networks:
       backend-net:
         aliases: [backend]
+      database-net:
+        aliases: [mtsmongo]
     ports:
       - 8081:8081
+    depends_on:
+      - mongodatabase
+    links:
+      - "mongodatabase:database"
 
   frontend:
     container_name: angular
@@ -42,10 +48,30 @@ services:
     networks:
       backend-net:
         aliases: [backend]
+        
+  mongodatabase:
+    container_name: mongodatabase
+    build: ./Database/MongoDB
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sa
+      - MONGO_INITDB_DATABASE=mts
+      - MONGO_INITDB_ROOT_PASSWORD=C@pgemini2017
+    networks:
+        database-net:
+          aliases: [mtsmongo]
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-volume:/data/db
+      - ./Database/MongoDB/mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh:ro
 
 networks:
   backend-net:
     driver: bridge
+  database-net:
+    driver: bridge
 
 volumes:
   mssql-volume:
+  mongodb-volume:

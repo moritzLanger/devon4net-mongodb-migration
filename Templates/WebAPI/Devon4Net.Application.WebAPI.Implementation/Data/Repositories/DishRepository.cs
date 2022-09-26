@@ -11,20 +11,26 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
     {
         private readonly IMongoClient _mongoClient;
         private readonly IMongoCollection<Dish> _dishCollection;
-
+        private const string databaseName = "mts";
+        private const string collectionName = "Dish";
+        //add IMongoClient mongoclient parameter to constructor
         public DishRepository()
         {
             //Set up the connection string and create a corresponding mongoclient
-            var settings = MongoClientSettings.FromConnectionString("mongodb://localhost:27017");
+            var settings = MongoClientSettings.FromConnectionString("mongodb://sa:C%40pgemini2017@mongodatabase:27017");
+            //mongodb://sa:C%40pgemini2017@mongodatabase:27017/?authSource=admin&readPreference=primary&ssl=false
             _mongoClient = new MongoClient(settings);
 
+            //_mongoClient = mongoclient
+            //IMongoDatabase database = mongoClient.GetDatabase(databaseName);
+            
             //Register the mongodb c# driver to map the document field names to the model entity names
             var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention()};
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
             
             //Receive the Dish collection from our mongodatabase called mts
             _dishCollection = _mongoClient.GetDatabase("mts").GetCollection<Dish>("Dish");
-
+            //_dishCollection = database.GetCollection<Dish>(collectionName);
         }
 
 
