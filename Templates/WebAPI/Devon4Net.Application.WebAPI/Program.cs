@@ -1,3 +1,4 @@
+using Devon4Net.Application.WebAPI;
 using Devon4Net.Application.WebAPI.Configuration;
 using Devon4Net.Application.WebAPI.Configuration.Application;
 using Devon4Net.Application.WebAPI.Implementation.Business.DishManagement.Service;
@@ -38,12 +39,11 @@ builder.Services.SetupMediatR(builder.Configuration);
 builder.Services.SetupKafka(builder.Configuration);
 builder.Services.SetupGrpc(builder.Configuration);
 builder.Services.SetupDevonDependencyInjection(builder.Configuration);
-//builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
-////    var settings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-//    return new MongoClient(settings.ConnectionString);
-//});
-//builder.Services.AddSingleton<IDishRepository, DishRepository>();
-builder.Services.AddSingleton<DishService>();
+var mongoConfig = new ServerConfig();
+builder.Configuration.Bind(mongoConfig);
+builder.Services.AddSingleton<MongoDbSettings>();
+builder.Services.AddSingleton<IDishRepository, DishRepository>();
+builder.Services.AddSingleton<IDishService, DishService>();
 #endregion
 
 var app = builder.Build();

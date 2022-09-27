@@ -19,6 +19,8 @@ services:
     build: 
       context: ./Templates/WebAPI
       dockerfile: ./Devon4Net.Application.WebAPI/Dockerfile
+    environment:
+      MongoDB__Host: mongodatabase
     networks:
       backend-net:
         aliases: [backend]
