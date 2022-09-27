@@ -14,6 +14,11 @@ WORKDIR "/src/Devon4Net.Application.WebAPI"
 RUN echo '{\n\t"ConnectionStrings": {\n\t\t"MyThaiStar": "Server=sql-server;Database=MyThaiStar;User=sa;Password=C@pgemini2017"\n\t}\n}' >> appsettingsExtra.json
 RUN dotnet build "Devon4Net.Application.WebAPI.csproj" -c Release -o /app/build
 
+FROM build as test
+WORKDIR /src/Devon4Net.Test
+# only the last CMD in a dockerfile will be executed, so this step gets skipped
+CMD ["dotnet", "test"]
+
 FROM build AS publish
 RUN dotnet publish "Devon4Net.Application.WebAPI.csproj" -c Release -o /app/publish
 
