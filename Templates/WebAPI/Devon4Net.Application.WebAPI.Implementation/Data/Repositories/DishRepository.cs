@@ -17,7 +17,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
         private readonly IConfiguration _config;
         private const string databaseName = "mts";
         private const string collectionName = "Dish";
-        //add IMongoClient mongoclient parameter to constructor
+
         public DishRepository(IConfiguration config,  IHostEnvironment environtment)
         {
             _config = config;

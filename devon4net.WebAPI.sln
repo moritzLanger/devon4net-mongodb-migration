@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devon4Net.Application.WebAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devon4Net.Application.WebAPI.Implementation", "Templates\WebAPI\Devon4Net.Application.WebAPI.Implementation\Devon4Net.Application.WebAPI.Implementation.csproj", "{47DD9A55-8421-493A-86F5-6FB48B1848C8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devon4Net.Test", "Templates\WebAPI\Devon4Net.Test\Devon4Net.Test.csproj", "{A93D7BC1-263E-459D-94C0-AD6F20437294}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{47DD9A55-8421-493A-86F5-6FB48B1848C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47DD9A55-8421-493A-86F5-6FB48B1848C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47DD9A55-8421-493A-86F5-6FB48B1848C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A93D7BC1-263E-459D-94C0-AD6F20437294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A93D7BC1-263E-459D-94C0-AD6F20437294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A93D7BC1-263E-459D-94C0-AD6F20437294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A93D7BC1-263E-459D-94C0-AD6F20437294}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
