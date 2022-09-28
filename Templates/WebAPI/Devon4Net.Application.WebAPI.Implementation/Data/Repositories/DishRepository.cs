@@ -1,9 +1,12 @@
 using Devon4Net.Application.WebAPI.Implementation.Domain.Entities;
+using Devon4Net.Application.WebAPI.Implementation.Configuration;
 using Devon4Net.Application.WebAPI.Implementation.Domain.RepositoryInterfaces;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
 {
@@ -11,26 +14,34 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
     {
         private readonly IMongoClient _mongoClient;
         private readonly IMongoCollection<Dish> _dishCollection;
+        private readonly IConfiguration _config;
         private const string databaseName = "mts";
         private const string collectionName = "Dish";
         //add IMongoClient mongoclient parameter to constructor
-        public DishRepository()
+        public DishRepository(IConfiguration config,  IHostEnvironment environtment)
         {
-            //Set up the connection string and create a corresponding mongoclient
-            var settings = MongoClientSettings.FromConnectionString("mongodb://sa:C%40pgemini2017@mongodatabase:27017");
-            //mongodb://sa:C%40pgemini2017@mongodatabase:27017/?authSource=admin&readPreference=primary&ssl=false
-            _mongoClient = new MongoClient(settings);
+            _config = config;
+            var mongodbSettings = new MongoDbSettings();
+            mongodbSettings = _config.GetSection("MongoDbSettings").Get<MongoDbSettings>();
+            if(environtment.EnvironmentName == "Production")
+            {
+                //Known Error of Environment Settings fault loading. An alternative would be to save the config inside the dockerfile of mongodatabase. 
+                // More specific one should insert the Settings inside appsettingsextra.json
+                // e.g. RUN echo '{\n\t"ConnectionStrings": {\n\t\t"MyThaiStar": "Server=sql-server;Database=MyThaiStar;User=sa;Password=C@pgemini2017"\n\t}\n}' >> appsettingsExtra.json
+                Console.WriteLine("Entered Workaround: Set Host to mongo service name.");
+                mongodbSettings.Host = "mongodatabase";
+            }
 
-            //_mongoClient = mongoclient
-            //IMongoDatabase database = mongoClient.GetDatabase(databaseName);
+            //Set up the connection string and create a corresponding mongoclient
+            var settings = MongoClientSettings.FromConnectionString(mongodbSettings.ConnectionString);
+            _mongoClient = new MongoClient(settings);
             
             //Register the mongodb c# driver to map the document field names to the model entity names
             var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention()};
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
             
             //Receive the Dish collection from our mongodatabase called mts
-            _dishCollection = _mongoClient.GetDatabase("mts").GetCollection<Dish>("Dish");
-            //_dishCollection = database.GetCollection<Dish>(collectionName);
+            _dishCollection = _mongoClient.GetDatabase(databaseName).GetCollection<Dish>(collectionName);
         }
 
 

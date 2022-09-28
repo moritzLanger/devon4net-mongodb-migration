@@ -19,6 +19,9 @@ services:
     build: 
       context: ./Templates/WebAPI
       dockerfile: ./Devon4Net.Application.WebAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DOTNET_ENVIRONMENT=Production
     networks:
       backend-net:
         aliases: [backend]
