@@ -15,15 +15,14 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
         private readonly IMongoClient _mongoClient;
         private readonly IMongoCollection<Dish> _dishCollection;
         private readonly IConfiguration _config;
-        private const string databaseName = "mts";
         private const string collectionName = "Dish";
 
-        public DishRepository(IConfiguration config,  IHostEnvironment environtment)
+        public DishRepository(IConfiguration config, IHostEnvironment environtment)
         {
             _config = config;
             var mongodbSettings = new MongoDbSettings();
             mongodbSettings = _config.GetSection("MongoDbSettings").Get<MongoDbSettings>();
-            if(environtment.EnvironmentName == "Production")
+            if (environtment.EnvironmentName == "Production")
             {
                 //Known Error of Environment Settings fault loading. An alternative would be to save the config inside the dockerfile of mongodatabase. 
                 // More specific one should insert the Settings inside appsettingsextra.json
@@ -35,13 +34,13 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
             //Set up the connection string and create a corresponding mongoclient
             var settings = MongoClientSettings.FromConnectionString(mongodbSettings.ConnectionString);
             _mongoClient = new MongoClient(settings);
-            
+
             //Register the mongodb c# driver to map the document field names to the model entity names
-            var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention()};
+            var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
-            
+
             //Receive the Dish collection from our mongodatabase called mts
-            _dishCollection = _mongoClient.GetDatabase(databaseName).GetCollection<Dish>(collectionName);
+            _dishCollection = _mongoClient.GetDatabase(mongodbSettings.Database).GetCollection<Dish>(collectionName);
         }
 
 
@@ -91,7 +90,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
             //Return all Dishes from collection to filter for intersection with MatchingCriteria results
             IList<Dish> result = await GetAll();
 
-            if(categoryIdList.Any())
+            if (categoryIdList.Any())
             {
                 //Return Dishes containing the given category id's
                 result = result.Where(dish => dish.Category.Any(cat => categoryIdList.Contains(cat.Id))).ToList();
@@ -115,6 +114,6 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
             }
 
             return result.ToList();
-        } 
+        }
     }
 }

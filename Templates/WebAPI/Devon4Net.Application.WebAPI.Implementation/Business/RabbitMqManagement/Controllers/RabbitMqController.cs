@@ -60,7 +60,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.RabbitMqManagemen
                 return StatusCode(StatusCodes.Status400BadRequest, "Please provide a valid description for the TO-DO");
             }
 
-            var todoCommand = new TodoCommand { Description = todoDescription};
+            var todoCommand = new TodoCommand { Description = todoDescription };
             var published = await TodoRabbitMqHandler.Publish(todoCommand).ConfigureAwait(false);
             return Ok(published);
         }

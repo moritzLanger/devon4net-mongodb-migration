@@ -27,6 +27,6 @@
         /// <summary>
         /// List of claims
         /// </summary>
-        public List<CorporateBasicInfo> CorporateInfo { get; set; } 
+        public List<CorporateBasicInfo> CorporateInfo { get; set; }
     }
 }

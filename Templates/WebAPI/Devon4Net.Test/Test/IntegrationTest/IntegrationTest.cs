@@ -35,7 +35,7 @@ namespace Devon4Net.Test.xUnit.Test.Integration
             {
                 cfg.AddProfile(new AutomapperProfile());
             });
-           Mapper = mockMapper.CreateMapper();
+            Mapper = mockMapper.CreateMapper();
         }
     }
 }

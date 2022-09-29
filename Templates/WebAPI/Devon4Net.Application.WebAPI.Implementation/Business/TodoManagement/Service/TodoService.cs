@@ -13,7 +13,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.TodoManagement.Se
     /// <summary>
     /// Service implementation
     /// </summary>
-    public class TodoService: Service<TodoContext>, ITodoService
+    public class TodoService : Service<TodoContext>, ITodoService
     {
         private readonly ITodoRepository _todoRepository;
 

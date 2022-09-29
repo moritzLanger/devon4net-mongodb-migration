@@ -40,7 +40,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.DishManagement.Se
         {
             return await _dishRepository.GetDishesByLikes(minLikes);
         }
-        
+
 
         public async Task<IList<Dish>> GetDishesMatchingCriteria(decimal maxPrice, int minLikes, string searchBy, IList<string> categoryIdList)
         {

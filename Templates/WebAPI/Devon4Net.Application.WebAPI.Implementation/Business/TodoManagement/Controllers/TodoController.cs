@@ -13,7 +13,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.TodoManagement.Co
     [EnableCors("CorsPolicy")]
     [ApiController]
     [Route("[controller]")]
-    public class TodoController: ControllerBase
+    public class TodoController : ControllerBase
     {
         private readonly ITodoService _todoService;
 
@@ -21,7 +21,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.TodoManagement.Co
         /// Constructor
         /// </summary>
         /// <param name="todoService"></param>
-        public TodoController( ITodoService todoService)
+        public TodoController(ITodoService todoService)
         {
             _todoService = todoService;
         }

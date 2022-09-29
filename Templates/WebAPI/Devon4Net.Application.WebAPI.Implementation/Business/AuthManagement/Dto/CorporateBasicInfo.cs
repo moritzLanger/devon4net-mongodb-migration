@@ -13,6 +13,6 @@
         /// <summary>
         /// the provided value
         /// </summary>
-        public string Value{ get; set; }
+        public string Value { get; set; }
     }
 }
