@@ -51,7 +51,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
         public Task<Todos> Create(string description)
         {
             Devon4NetLogger.Debug($"SetTodo method from repository TodoService with value : {description}");
-            var todo = new Todos {Description = description};
+            var todo = new Todos { Description = description };
 
             return Create(todo);
         }
@@ -71,7 +71,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
                 return id;
             }
 
-            throw  new ArgumentException($"The Todo entity {id} has not been deleted.");
+            throw new ArgumentException($"The Todo entity {id} has not been deleted.");
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.MediatRManagement
         /// <summary>
         /// 
         /// </summary>
-        public long TodoId{ get; set; }
+        public long TodoId { get; set; }
 
         /// <summary>
         /// Constructor of the query 

@@ -1,4 +1,21 @@
-**MongoDB download and setup**
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#mongodb-download-and-setup">MongoDB download and setup</a></li>
+    <li><a href="#mongodb-shell">MongoDB Shell</a></li>
+    <li><a href="#import-data-from-sql-library">Import data from SQL library</a></li>
+    <li><a href="#changing-the-collections-structure">Changing the collection's structure</a></li>
+    <li><a href="#setting-up-the-mongodb-c-webapi-driver">Setting up the MongoDB C# WebAPI Driver</a></li>
+    <li><a href="#add-a-mongodb-c-driver-to-your-devon4net-project">Add a MongoDB C# driver to your devon4net project</a></li>
+    <li><a href="#create-a-repository-interface-and-the-corresponding-implementation">Create a Repository Interface and the corresponding Implementation</a></li>
+    <li><a href="#create-an-entity">Create an Entity</a></li>
+    <li><a href="#create-the-entity-management">Create the Entity Management</a></li>
+    <li><a href="#add-filter-functions">Add filter functions</a></li>
+    <li><a href="#known-errors">Known Errors</a></li>
+  </ol>
+</details>
+
+## MongoDB download and setup
 
 - In this tutorial the MongoDB Community Server was used.
 - download and run the msi ([https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community))
@@ -7,7 +24,7 @@
   - Install MongoDB as a service
   - Run Service as Network User
 
-**MongoDB Shell**
+## MongoDB Shell
 
 - Additionally, the MongoDB Shell needs to be downloaded ([https://www.mongodb.com/try/download/shell](https://www.mongodb.com/try/download/shell))
 
@@ -21,7 +38,7 @@
 
 Note: If mongosh was added to your path environment variable, you can start a local mongodb deamon on default 27017 Port with following cmd: _mongosh_
 
-**Import data from SQL library**
+## Import data from SQL library
 
 - For the convertion/import use the Scripts from Ashley Davis Github by following these steps.
 
@@ -35,14 +52,14 @@ Note: If mongosh was added to your path environment variable, you can start a lo
 
 node index.js
 
-**Changing the collection's structure**
+## Changing the collection's structure
 
 - In order to use NoSql to its strength one might need to change the structure created by the script
 - With a MongoDB shell script, the collections can be changed, one can use the following commands to do so:
 
 ![](assets/MongoDbScript.png)
 
-**Setting up the MongoDB C# WebAPI Driver**
+## Setting up the MongoDB C# WebAPI Driver
 
 MongoDB delivers a great API which is easy to include and doesn't need much adjustment on the application side.
 In a summary, one has to:
@@ -65,7 +82,7 @@ I am using the following MongoDB Instance, received by utilizing the MongoDBScri
 
 Note: In this example we populated our dish collection with fields which might be unnecessary. For example the _Dish.Image.ModificationCounter_ or the _Category.ModificationCounter_ fields could've been omited when populating our database. We did so, because of an easy and fast straigthforward population process from the old sql database to our new mongo database. Data modeling is a very extensive topic and thinking about the correct document structures is a crucial part of a migration from SQL to Nosql. Read more about this if needed.
 
-**Add a MongoDB C# driver to your devon4net project**
+## Add a MongoDB C# driver to your devon4net project
 
 .NET CLI
 
@@ -85,7 +102,7 @@ Search in the Browse Tab for MongoDB.Driver, check the Projext Box and press ins
 
 ![](assets/MongoDBDriver.png)
 
-**Create a Repository Interface and the corresponding Implementation**
+## Create a Repository Interface and the corresponding Implementation
 
 Create an Interface inside the _Domain/RepositoryInterfaces_ directory for your NoSQL Repository. Following code was used to create a simple connection to a local Mongodb deamon.
 
@@ -133,7 +150,7 @@ Inside the _Data/Repositories_ directory create a repository implementation:
 
  Note:  Watchout to insert the correct database Name when you try to receive the collection via mongoClient.GetDatabase("database_Name").
 
-**Create an Entity**
+## Create an Entity
 
 Inside the _Domain/Entities_ folder create a new entity class to deserialize the documents which come from our local MongoDB instance. In our example it might look like this:
 
@@ -161,7 +178,7 @@ Inside the _Domain/Entities_ folder create a new entity class to deserialize the
 
 Note: Take care of nested documents incoming from mongodb, via sub-classes for example ImageNosql which is not shown here.
 
-**Create the Entity Management**
+## Create the Entity Management
 
 Inside the _Business_ directory create an _DishNosqlManagement_ directory with following sub-directories:
 _Controllers, Converters, Dto_ and _Service_.
@@ -270,7 +287,7 @@ And as a last step create the necessary converter class inside the _Business/Dis
 
 builder.Services.AddSingleton<DishNosqlService>();
 
-**Add filter functions**
+## Add filter functions
 
 Lets add two filter functions to our application. _GetDishesByCategory_ and _GetDishesMatchingCriteria_.
 
@@ -377,3 +394,6 @@ Add the corresponding WebAPI inside our DishController Class:
 Note: _**GetDishesByPrice(maxPrice)**_ and _**GetDishesByString(searchBy)**_, are not shown in this example and are left as an exercise to learn more about the Mongodb C# API. The implementation of _**GetDishesByCategory(IList<string> categoryIdList)**_ can be used as a reference since it has a similar code.
 
 If you need the full sample code because some parts have been omited, you can look it up here: [Github Repo](https://github.com/vlad961/Devon4netMongoDB.git)​​​​​​​
+
+## Known Errors
+The appsettings.${Environment}.json settings are not applied correctly. Inside the WebAPI.Implementation/Data/Repository/DishRepository an workaround has to be executed. Therefore watchout when you try to use your devolopment environment settings those might be overriden. (Further information can be found as code comments inside the DishRepository constructor)

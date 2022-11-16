@@ -1,10 +1,12 @@
 using Devon4Net.Application.WebAPI.Implementation.Domain.Entities;
+using Devon4Net.Application.WebAPI.Implementation.Configuration;
 using Devon4Net.Application.WebAPI.Implementation.Domain.RepositoryInterfaces;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson;
 using System.Text.RegularExpressions;
-using Devon4Net.Application.WebAPI.Implementation.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
 {
@@ -12,19 +14,33 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
     {
         private readonly IMongoClient _mongoClient;
         private readonly IMongoCollection<Dish> _dishCollection;
+        private readonly IConfiguration _config;
         private const string collectionName = "Dish";
-        public DishRepository(MongoDbSettings config)
+
+        public DishRepository(IConfiguration config, IHostEnvironment environtment)
         {
+            _config = config;
+            var mongodbSettings = new MongoDbSettings();
+            mongodbSettings = _config.GetSection("MongoDbSettings").Get<MongoDbSettings>();
+            if (environtment.EnvironmentName == "Production")
+            {
+                //Known Error of Environment Settings fault loading. An alternative would be to save the config inside the dockerfile of mongodatabase. 
+                // More specific one should insert the Settings inside appsettingsextra.json
+                // e.g. RUN echo '{\n\t"ConnectionStrings": {\n\t\t"MyThaiStar": "Server=sql-server;Database=MyThaiStar;User=sa;Password=C@pgemini2017"\n\t}\n}' >> appsettingsExtra.json
+                Console.WriteLine("Entered Workaround: Set Host to mongo service name.");
+                mongodbSettings.Host = "mongodatabase";
+            }
+
             //Set up the connection string and create a corresponding mongoclient
-            var settings = MongoClientSettings.FromConnectionString(config.ConnectionString);
+            var settings = MongoClientSettings.FromConnectionString(mongodbSettings.ConnectionString);
             _mongoClient = new MongoClient(settings);
-            
+
             //Register the mongodb c# driver to map the document field names to the model entity names
-            var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention()};
+            var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
-            
+
             //Receive the Dish collection from our mongodatabase called mts
-            _dishCollection = _mongoClient.GetDatabase(config.Database).GetCollection<Dish>(collectionName);
+            _dishCollection = _mongoClient.GetDatabase(mongodbSettings.Database).GetCollection<Dish>(collectionName);
         }
 
 
@@ -74,7 +90,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
             //Return all Dishes from collection to filter for intersection with MatchingCriteria results
             IList<Dish> result = await GetAll();
 
-            if(categoryIdList.Any())
+            if (categoryIdList.Any())
             {
                 //Return Dishes containing the given category id's
                 result = result.Where(dish => dish.Category.Any(cat => categoryIdList.Contains(cat.Id))).ToList();
@@ -98,6 +114,6 @@ namespace Devon4Net.Application.WebAPI.Implementation.Data.Repositories
             }
 
             return result.ToList();
-        } 
+        }
     }
 }

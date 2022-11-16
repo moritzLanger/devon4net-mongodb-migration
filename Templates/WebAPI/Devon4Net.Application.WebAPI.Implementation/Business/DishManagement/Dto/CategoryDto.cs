@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Devon4Net.Application.WebAPI.Implementation.Business.DishManagement.Dto
 {
-public class CategoryDto
+    public class CategoryDto
     {
         public string id { get; set; }
 

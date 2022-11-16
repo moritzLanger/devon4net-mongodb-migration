@@ -2,7 +2,7 @@
 
 namespace Devon4Net.Business.Common
 {
-    public class AutomapperProfile : Profile 
+    public class AutomapperProfile : Profile
     {
         /// <summary>
         /// Put automapper profile here

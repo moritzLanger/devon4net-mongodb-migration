@@ -80,7 +80,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Configuration
 
         private static void SetupFluentValidators(IServiceCollection services)
         {
-            services.AddFluentValidation< IValidator<TodoDto>, TodosFluentValidator>();
+            services.AddFluentValidation<IValidator<TodoDto>, TodosFluentValidator>();
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Configuration
         private static void SetupDatabase(IServiceCollection services, IConfiguration configuration)
         {
             services.SetupDatabase<TodoContext>(configuration, "Default", DatabaseType.InMemory).ConfigureAwait(false);
-            services.SetupDatabase<DishContext>(configuration, "Default", DatabaseType.InMemory).ConfigureAwait(false); 
+            services.SetupDatabase<DishContext>(configuration, "Default", DatabaseType.InMemory).ConfigureAwait(false);
         }
 
         private static void SetupJwtPolicies(IServiceCollection services)

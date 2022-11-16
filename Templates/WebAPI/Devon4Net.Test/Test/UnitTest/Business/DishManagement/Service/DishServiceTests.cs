@@ -87,7 +87,7 @@ namespace Devon4Net.Test.xUnit.Test.UnitTest.Management.Controllers
                 Name = Guid.NewGuid().ToString(),
                 Price = (decimal)rand.NextDouble() + 1,
                 Image = CreateRandomImage(),
-                Category = new[] { CreateRandomCategory(), CreateRandomCategory() , CreateRandomCategory() }
+                Category = new[] { CreateRandomCategory(), CreateRandomCategory(), CreateRandomCategory() }
             };
         }
     }

@@ -10,7 +10,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.RabbitMqManagemen
     /// <summary>
     /// TodoRabbitMqHandler 
     /// </summary>
-    public class TodoRabbitMqHandler: RabbitMqHandler<TodoCommand>
+    public class TodoRabbitMqHandler : RabbitMqHandler<TodoCommand>
     {
         private ITodoService TodoService { get; set; }
 
@@ -68,7 +68,7 @@ namespace Devon4Net.Application.WebAPI.Implementation.Business.RabbitMqManagemen
             TodoService = GetInstance<ITodoService>();
 
             var result = await TodoService.CreateTodo(command.Description).ConfigureAwait(false);
-            return result!=null;
+            return result != null;
         }
     }
 }
